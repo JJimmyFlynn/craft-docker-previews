@@ -16,3 +16,4 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CODEBUILD_WEBHOOK_TRIGGER:$IMAGE_TAG
+
