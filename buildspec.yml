@@ -5,13 +5,14 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - aws ecr create-repository --repository-name $CODEBUILD_WEBHOOK_TRIGGER
   build:
     commands:
-      - echo Build started on `date`
       - echo Building the Docker image...          
-      - docker build -t $CODEBUILD_WEBHOOK_TRIGGER .
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CODEBUILD_WEBHOOK_TRIGGER:$IMAGE_TAG 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $CODEBUILD_WEBHOOK_TRIGGER
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CODEBUILD_WEBHOOK_TRIGGER:$IMAGE_TAG
