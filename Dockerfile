@@ -20,5 +20,5 @@ COPY app /app
 RUN chown -R www-data:www-data /app
 USER www-data
 
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
